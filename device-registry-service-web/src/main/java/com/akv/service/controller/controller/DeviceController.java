@@ -1,11 +1,10 @@
-package com.akv.service.controller;
+package com.akv.service.controller.controller;
 
 import com.akv.service.controller.dto.CreateDeviceRequest;
 import com.akv.service.controller.dto.DeviceResponse;
 import com.akv.service.controller.dto.UpdateDeviceRequest;
-import com.akv.service.controller.mapper.DeviceMapper;
 import com.akv.service.domain.Device;
-import com.akv.service.logic.DeviceService;
+import com.akv.service.domain.service.DeviceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;

@@ -1,7 +1,8 @@
 package com.akv.service.controller;
 
+import com.akv.service.controller.controller.DeviceController;
 import com.akv.service.domain.Device;
-import com.akv.service.logic.DeviceService;
+import com.akv.service.domain.service.DeviceService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

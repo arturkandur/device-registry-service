@@ -1,4 +1,4 @@
-package com.akv.service.logic;
+package com.akv.service.domain.service;
 
 import com.akv.service.domain.Device;
 

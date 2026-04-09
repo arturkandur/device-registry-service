@@ -27,3 +27,4 @@ replay_pid*
 /.mvn/
 /.idea/
 */target/
+/docs/superpowers/

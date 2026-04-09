@@ -18,7 +18,7 @@
         </dependency>
         <dependency>
             <groupId>com.akv</groupId>
-            <artifactId>device-registry-service-logic</artifactId>
+            <artifactId>device-registry-service-domain</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
