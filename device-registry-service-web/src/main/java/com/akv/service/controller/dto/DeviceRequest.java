@@ -4,7 +4,7 @@ import com.akv.service.domain.Device;
 import lombok.Value;
 
 @Value
-public class UpdateDeviceRequest {
+public class DeviceRequest {
 
     String name;
     String brand;

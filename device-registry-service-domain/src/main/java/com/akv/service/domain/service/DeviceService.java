@@ -6,11 +6,11 @@ import java.util.List;
 
 public interface DeviceService {
 
-    Device createDevice(String name, String brand, Device.State state);
+    Device createDevice(Device device);
 
-    Device updateDevice(Long id, String name, String brand, Device.State state);
+    Device updateDevice(Device device);
 
-    Device patchDevice(Long id, String name, String brand, Device.State state);
+    Device patchDevice(Device device);
 
     Device getDevice(Long id);
 

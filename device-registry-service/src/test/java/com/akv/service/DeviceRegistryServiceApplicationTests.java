@@ -1,7 +1,6 @@
 package com.akv.service;
 
-import com.akv.service.controller.dto.CreateDeviceRequest;
-import com.akv.service.controller.dto.UpdateDeviceRequest;
+import com.akv.service.controller.dto.DeviceRequest;
 import com.akv.service.domain.Device;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -30,9 +29,9 @@ class DeviceRegistryServiceApplicationTests {
 
     @Test
     void shouldCreateDevice() {
-        CreateDeviceRequest createDeviceRequest = new CreateDeviceRequest("Phone X", "Apple", Device.State.AVAILABLE);
+        DeviceRequest deviceRequest = new DeviceRequest("Phone X", "Apple", Device.State.AVAILABLE);
         given()
-                .body(createDeviceRequest)
+                .body(deviceRequest)
                 .when().post("/devices")
                 .then().statusCode(201)
                 .body("id", notNullValue())
@@ -45,7 +44,7 @@ class DeviceRegistryServiceApplicationTests {
     void shouldUpdateDevice() {
         long id = createAndGetId("Laptop A", "Dell", Device.State.AVAILABLE);
 
-        UpdateDeviceRequest updateDeviceRequest = new UpdateDeviceRequest("Laptop B", "HP", Device.State.IN_USE);
+        DeviceRequest updateDeviceRequest = new DeviceRequest("Laptop B", "HP", Device.State.IN_USE);
         given()
                 .body(updateDeviceRequest)
                 .when().put("/devices/{id}", id)
@@ -79,9 +78,9 @@ class DeviceRegistryServiceApplicationTests {
     }
 
     private long createAndGetId(String name, String brand, Device.State state) {
-        CreateDeviceRequest createDeviceRequest = new CreateDeviceRequest(name, brand, state);
+        DeviceRequest deviceRequest = new DeviceRequest(name, brand, state);
         return given()
-                .body(createDeviceRequest)
+                .body(deviceRequest)
                 .when().post("/devices")
                 .then().statusCode(201)
                 .extract().jsonPath().getLong("id");

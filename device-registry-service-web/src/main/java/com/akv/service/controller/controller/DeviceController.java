@@ -1,8 +1,7 @@
 package com.akv.service.controller.controller;
 
-import com.akv.service.controller.dto.CreateDeviceRequest;
+import com.akv.service.controller.dto.DeviceRequest;
 import com.akv.service.controller.dto.DeviceResponse;
-import com.akv.service.controller.dto.UpdateDeviceRequest;
 import com.akv.service.domain.Device;
 import com.akv.service.domain.service.DeviceService;
 import lombok.RequiredArgsConstructor;
@@ -28,29 +27,27 @@ import static com.akv.service.controller.mapper.DeviceMapper.DEVICE_MAPPER;
 @RequiredArgsConstructor
 public class DeviceController {
 
+    //TODO: add logs
 
     private final DeviceService deviceService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public DeviceResponse createDevice(@RequestBody CreateDeviceRequest request) {
+    public DeviceResponse createDevice(@RequestBody DeviceRequest request) {
         return DEVICE_MAPPER.toResponse(
-                deviceService.createDevice(request.getName(), request.getBrand(), request.getState())
-        );
+                deviceService.createDevice(DEVICE_MAPPER.toDomain(request)));
     }
 
     @PutMapping("/{id}")
-    public DeviceResponse updateDevice(@PathVariable Long id, @RequestBody UpdateDeviceRequest request) {
+    public DeviceResponse updateDevice(@PathVariable Long id, @RequestBody DeviceRequest request) {
         return DEVICE_MAPPER.toResponse(
-                deviceService.updateDevice(id, request.getName(), request.getBrand(), request.getState())
-        );
+                deviceService.updateDevice(DEVICE_MAPPER.toDomain(id, request)));
     }
 
     @PatchMapping("/{id}")
-    public DeviceResponse patchDevice(@PathVariable Long id, @RequestBody UpdateDeviceRequest request) {
+    public DeviceResponse patchDevice(@PathVariable Long id, @RequestBody DeviceRequest request) {
         return DEVICE_MAPPER.toResponse(
-                deviceService.patchDevice(id, request.getName(), request.getBrand(), request.getState())
-        );
+                deviceService.patchDevice(DEVICE_MAPPER.toDomain(id, request)));
     }
 
     @GetMapping("/{id}")
@@ -61,8 +58,7 @@ public class DeviceController {
     @GetMapping
     public List<DeviceResponse> getDevices(
             @RequestParam(required = false) String brand,
-            @RequestParam(required = false) Device.State state
-    ) {
+            @RequestParam(required = false) Device.State state) {
         if (brand != null) {
             return deviceService.getDevicesByBrand(brand).stream().map(DEVICE_MAPPER::toResponse).toList();
         }

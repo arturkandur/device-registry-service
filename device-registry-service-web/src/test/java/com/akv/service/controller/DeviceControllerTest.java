@@ -42,12 +42,23 @@ class DeviceControllerTest {
     private static final Instant CREATION_TIME = Instant.parse("2026-01-01T00:00:00Z");
 
     private Device device(Long id) {
-        return new Device(id, "Phone X", "Apple", Device.State.AVAILABLE, CREATION_TIME);
+        return Device.builder()
+                .id(id)
+                .name("Phone X")
+                .brand("Apple")
+                .state(Device.State.AVAILABLE)
+                .creationTime(CREATION_TIME)
+                .build();
     }
 
     @Test
-    void createDevice_returns201WithCreatedDevice() throws Exception {
-        when(deviceService.createDevice("Phone X", "Apple", Device.State.AVAILABLE))
+    void shouldCreateDeviceAndReturns201WithCreatedDevice() throws Exception {
+        Device device = Device.builder()
+                .name("Phone X")
+                .brand("Apple")
+                .state(Device.State.AVAILABLE)
+                .build();
+        when(deviceService.createDevice(device))
                 .thenReturn(device(1L));
 
         mockMvc.perform(post("/devices")
@@ -63,9 +74,16 @@ class DeviceControllerTest {
     }
 
     @Test
-    void updateDevice_returns200WithUpdatedDevice() throws Exception {
-        when(deviceService.updateDevice(1L, "Phone X", "Apple", Device.State.IN_USE))
-                .thenReturn(new Device(1L, "Phone X", "Apple", Device.State.IN_USE, CREATION_TIME));
+    void shouldUpdateDeviceAndReturns200WithUpdatedDevice() throws Exception {
+        Device device = Device.builder()
+                .id(1L)
+                .name("Phone X")
+                .brand("Apple")
+                .state(Device.State.IN_USE)
+                .build();
+
+        when(deviceService.updateDevice(device))
+                .thenReturn(device.toBuilder().id(1L).creationTime(CREATION_TIME).build());
 
         mockMvc.perform(put("/devices/1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -77,9 +95,10 @@ class DeviceControllerTest {
     }
 
     @Test
-    void patchDevice_returns200WithPatchedDevice() throws Exception {
-        when(deviceService.patchDevice(1L, null, null, Device.State.INACTIVE))
-                .thenReturn(new Device(1L, "Phone X", "Apple", Device.State.INACTIVE, CREATION_TIME));
+    void shouldPatchDeviceAndReturns200WithPatchedDevice() throws Exception {
+        Device.builder().state(Device.State.INACTIVE).build();
+        when(deviceService.patchDevice(Device.builder().id(1L).state(Device.State.INACTIVE).build()))
+                .thenReturn(device(1L).toBuilder().state(Device.State.INACTIVE).build());
 
         mockMvc.perform(patch("/devices/1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -91,7 +110,7 @@ class DeviceControllerTest {
     }
 
     @Test
-    void getDevice_returns200WithDevice() throws Exception {
+    void shouldGetDeviceAndReturns200WithDevice() throws Exception {
         when(deviceService.getDevice(1L)).thenReturn(device(1L));
 
         mockMvc.perform(get("/devices/1"))
@@ -110,7 +129,7 @@ class DeviceControllerTest {
     }
 
     @Test
-    void getDevices_filterByBrand_returns200WithMatchingDevices() throws Exception {
+    void shouldGetDevicesAndFilterByBrandAndReturns200WithMatchingDevices() throws Exception {
         when(deviceService.getDevicesByBrand("Apple")).thenReturn(List.of(device(1L)));
 
         mockMvc.perform(get("/devices").param("brand", "Apple"))
@@ -120,7 +139,7 @@ class DeviceControllerTest {
     }
 
     @Test
-    void getDevices_filterByState_returns200WithMatchingDevices() throws Exception {
+    void shouldGetDevicesAndFilterByStateAndReturns200WithMatchingDevices() throws Exception {
         when(deviceService.getDevicesByState(Device.State.AVAILABLE)).thenReturn(List.of(device(1L)));
 
         mockMvc.perform(get("/devices").param("state", "AVAILABLE"))
@@ -130,7 +149,7 @@ class DeviceControllerTest {
     }
 
     @Test
-    void deleteDevice_returns204() throws Exception {
+    void shouldDeleteDeviceAndReturns204() throws Exception {
         doNothing().when(deviceService).deleteDevice(1L);
 
         mockMvc.perform(delete("/devices/1"))
