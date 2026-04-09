@@ -1,16 +1,15 @@
 package com.akv.service;
 
+import com.akv.service.persistence.config.PersistenceConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.persistence.autoconfigure.EntityScan;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.context.annotation.Import;
 
 @SpringBootApplication(scanBasePackages = "com.akv.service")
-@EnableJpaRepositories(basePackages = "com.akv.service.persistence.repository")
-@EntityScan(basePackages = "com.akv.service.persistence.entity")
+@Import(PersistenceConfiguration.class)
 public class DeviceRegistryServiceApplication {
 
-    public static void main(String[] args) {
+    static void main(String[] args) {
         SpringApplication.run(DeviceRegistryServiceApplication.class, args);
     }
 
