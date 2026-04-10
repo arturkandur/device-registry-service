@@ -77,6 +77,14 @@ class DeviceRegistryServiceApplicationTests {
                 .body("state", equalTo("IN_USE"));
     }
 
+    @Test
+    void shouldNotDeleteInUseDevice() {
+        long id = createAndGetId("Phone Y", "Apple", Device.State.IN_USE);
+
+        given().when().delete("/devices/{id}", id)
+                .then().statusCode(409);
+    }
+
     private long createAndGetId(String name, String brand, Device.State state) {
         DeviceRequest deviceRequest = new DeviceRequest(name, brand, state);
         return given()

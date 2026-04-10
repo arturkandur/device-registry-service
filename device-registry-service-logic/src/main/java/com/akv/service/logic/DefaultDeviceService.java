@@ -1,6 +1,7 @@
 package com.akv.service.logic;
 
 import com.akv.service.domain.Device;
+import com.akv.service.domain.exception.DeviceNotDeletableException;
 import com.akv.service.domain.service.DevicePersistenceAdapter;
 import com.akv.service.domain.service.DeviceService;
 import lombok.RequiredArgsConstructor;
@@ -71,8 +72,10 @@ public class DefaultDeviceService implements DeviceService {
 
     @Override
     public void deleteDevice(Long id) {
-        if (!devicePersistenceAdapter.existsById(id)) {
-            throw new NoSuchElementException("Device not found: " + id);
+        Device device = devicePersistenceAdapter.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Device not found: " + id));
+        if (device.getState() == Device.State.IN_USE) {
+            throw new DeviceNotDeletableException(id);
         }
         devicePersistenceAdapter.deleteById(id);
     }

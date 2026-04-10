@@ -10,6 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.Instant;
 import java.util.List;
+import com.akv.service.domain.exception.DeviceNotDeletableException;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -160,7 +161,8 @@ class DefaultDeviceServiceTest {
 
     @Test
     void shouldDeleteDevice() {
-        when(persistenceAdapter.existsById(1L)).thenReturn(true);
+        Device device = Device.builder().id(1L).name("Phone").brand("Apple").state(Device.State.AVAILABLE).creationTime(Instant.now()).build();
+        when(persistenceAdapter.findById(1L)).thenReturn(Optional.of(device));
 
         service.deleteDevice(1L);
 
@@ -169,11 +171,23 @@ class DefaultDeviceServiceTest {
 
     @Test
     void shouldThrowWhenDeletingNonExistingDevice() {
-        when(persistenceAdapter.existsById(99L)).thenReturn(false);
+        when(persistenceAdapter.findById(99L)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> service.deleteDevice(99L))
                 .isInstanceOf(NoSuchElementException.class)
                 .hasMessageContaining("99");
+
+        verify(persistenceAdapter, never()).deleteById(any());
+    }
+
+    @Test
+    void shouldThrowWhenDeletingInUseDevice() {
+        Device device = Device.builder().id(2L).name("Laptop").brand("Dell").state(Device.State.IN_USE).creationTime(Instant.now()).build();
+        when(persistenceAdapter.findById(2L)).thenReturn(Optional.of(device));
+
+        assertThatThrownBy(() -> service.deleteDevice(2L))
+                .isInstanceOf(DeviceNotDeletableException.class)
+                .hasMessageContaining("2");
 
         verify(persistenceAdapter, never()).deleteById(any());
     }
