@@ -78,6 +78,28 @@ class DeviceRegistryServiceApplicationTests {
     }
 
     @Test
+    void shouldNotUpdateNameOfInUseDevice() {
+        long id = createAndGetId("Phone X", "Apple", Device.State.IN_USE);
+
+        DeviceRequest update = new DeviceRequest("Tablet Z", "Apple", Device.State.IN_USE);
+        given()
+                .body(update)
+                .when().put("/devices/{id}", id)
+                .then().statusCode(409);
+    }
+
+    @Test
+    void shouldNotPatchBrandOfInUseDevice() {
+        long id = createAndGetId("Phone X", "Apple", Device.State.IN_USE);
+
+        DeviceRequest patch = new DeviceRequest(null, "Samsung", null);
+        given()
+                .body(patch)
+                .when().patch("/devices/{id}", id)
+                .then().statusCode(409);
+    }
+
+    @Test
     void shouldNotDeleteInUseDevice() {
         long id = createAndGetId("Phone Y", "Apple", Device.State.IN_USE);
 

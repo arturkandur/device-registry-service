@@ -2,6 +2,7 @@ package com.akv.service.logic;
 
 import com.akv.service.domain.Device;
 import com.akv.service.domain.exception.DeviceNotDeletableException;
+import com.akv.service.domain.exception.DeviceNotUpdatableException;
 import com.akv.service.domain.service.DevicePersistenceAdapter;
 import com.akv.service.domain.service.DeviceService;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,12 @@ public class DefaultDeviceService implements DeviceService {
     public Device updateDevice(Device device) {
         Device existing = devicePersistenceAdapter.findById(device.getId())
                 .orElseThrow(() -> new NoSuchElementException("Device not found: " + device.getId()));
+
+        if (existing.getState() == Device.State.IN_USE
+                && (!existing.getName().equals(device.getName()) || !existing.getBrand().equals(device.getBrand()))) {
+            throw new DeviceNotUpdatableException(device.getId());
+        }
+
         return devicePersistenceAdapter.save(existing.toBuilder()
                 .name(device.getName())
                 .brand(device.getBrand())
@@ -40,6 +47,12 @@ public class DefaultDeviceService implements DeviceService {
     public Device patchDevice(Device device) {
         Device existing = devicePersistenceAdapter.findById(device.getId())
                 .orElseThrow(() -> new NoSuchElementException("Device not found: " + device.getId()));
+
+        boolean nameChanging = device.getName() != null && !device.getName().equals(existing.getName());
+        boolean brandChanging = device.getBrand() != null && !device.getBrand().equals(existing.getBrand());
+        if (existing.getState() == Device.State.IN_USE && (nameChanging || brandChanging)) {
+            throw new DeviceNotUpdatableException(device.getId());
+        }
 
         Device.DeviceBuilder deviceBuilder = existing.toBuilder();
         Optional.ofNullable(device.getName()).ifPresent(deviceBuilder::name);

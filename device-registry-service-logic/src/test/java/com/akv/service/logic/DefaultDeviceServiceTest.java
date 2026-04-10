@@ -11,6 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.Instant;
 import java.util.List;
 import com.akv.service.domain.exception.DeviceNotDeletableException;
+import com.akv.service.domain.exception.DeviceNotUpdatableException;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -69,6 +70,44 @@ class DefaultDeviceServiceTest {
     }
 
     @Test
+    void shouldThrowWhenUpdatingNameOfInUseDevice() {
+        Device existing = Device.builder().id(1L).name("Phone").brand("Apple").state(Device.State.IN_USE).creationTime(Instant.now()).build();
+        Device update = Device.builder().id(1L).name("Tablet").brand("Apple").state(Device.State.IN_USE).build();
+        when(persistenceAdapter.findById(1L)).thenReturn(Optional.of(existing));
+
+        assertThatThrownBy(() -> service.updateDevice(update))
+                .isInstanceOf(DeviceNotUpdatableException.class)
+                .hasMessageContaining("1");
+
+        verify(persistenceAdapter, never()).save(any());
+    }
+
+    @Test
+    void shouldThrowWhenUpdatingBrandOfInUseDevice() {
+        Device existing = Device.builder().id(1L).name("Phone").brand("Apple").state(Device.State.IN_USE).creationTime(Instant.now()).build();
+        Device update = Device.builder().id(1L).name("Phone").brand("Samsung").state(Device.State.IN_USE).build();
+        when(persistenceAdapter.findById(1L)).thenReturn(Optional.of(existing));
+
+        assertThatThrownBy(() -> service.updateDevice(update))
+                .isInstanceOf(DeviceNotUpdatableException.class)
+                .hasMessageContaining("1");
+
+        verify(persistenceAdapter, never()).save(any());
+    }
+
+    @Test
+    void shouldAllowUpdatingStateOfInUseDevice() {
+        Device existing = Device.builder().id(1L).name("Phone").brand("Apple").state(Device.State.IN_USE).creationTime(Instant.now()).build();
+        Device update = Device.builder().id(1L).name("Phone").brand("Apple").state(Device.State.AVAILABLE).build();
+        when(persistenceAdapter.findById(1L)).thenReturn(Optional.of(existing));
+        when(persistenceAdapter.save(any())).thenAnswer(inv -> inv.getArgument(0));
+
+        Device result = service.updateDevice(update);
+
+        assertThat(result.getState()).isEqualTo(Device.State.AVAILABLE);
+    }
+
+    @Test
     void shouldThrowWhenUpdatingNonExistingDevice() {
         Device update = Device.builder().id(99L).name("X").brand("X").state(Device.State.AVAILABLE).build();
         when(persistenceAdapter.findById(99L)).thenReturn(Optional.empty());
@@ -90,6 +129,44 @@ class DefaultDeviceServiceTest {
 
         assertThat(result.getName()).isEqualTo("New");
         assertThat(result.getBrand()).isEqualTo("OldBrand");
+        assertThat(result.getState()).isEqualTo(Device.State.AVAILABLE);
+    }
+
+    @Test
+    void shouldThrowWhenPatchingNameOfInUseDevice() {
+        Device existing = Device.builder().id(1L).name("Phone").brand("Apple").state(Device.State.IN_USE).creationTime(Instant.now()).build();
+        Device patch = Device.builder().id(1L).name("Tablet").build();
+        when(persistenceAdapter.findById(1L)).thenReturn(Optional.of(existing));
+
+        assertThatThrownBy(() -> service.patchDevice(patch))
+                .isInstanceOf(DeviceNotUpdatableException.class)
+                .hasMessageContaining("1");
+
+        verify(persistenceAdapter, never()).save(any());
+    }
+
+    @Test
+    void shouldThrowWhenPatchingBrandOfInUseDevice() {
+        Device existing = Device.builder().id(1L).name("Phone").brand("Apple").state(Device.State.IN_USE).creationTime(Instant.now()).build();
+        Device patch = Device.builder().id(1L).brand("Samsung").build();
+        when(persistenceAdapter.findById(1L)).thenReturn(Optional.of(existing));
+
+        assertThatThrownBy(() -> service.patchDevice(patch))
+                .isInstanceOf(DeviceNotUpdatableException.class)
+                .hasMessageContaining("1");
+
+        verify(persistenceAdapter, never()).save(any());
+    }
+
+    @Test
+    void shouldAllowPatchingStateOfInUseDevice() {
+        Device existing = Device.builder().id(1L).name("Phone").brand("Apple").state(Device.State.IN_USE).creationTime(Instant.now()).build();
+        Device patch = Device.builder().id(1L).state(Device.State.AVAILABLE).build();
+        when(persistenceAdapter.findById(1L)).thenReturn(Optional.of(existing));
+        when(persistenceAdapter.save(any())).thenAnswer(inv -> inv.getArgument(0));
+
+        Device result = service.patchDevice(patch);
+
         assertThat(result.getState()).isEqualTo(Device.State.AVAILABLE);
     }
 
