@@ -115,7 +115,7 @@ public class DefaultDeviceService implements DeviceService {
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public void deleteDevice(Long id) {
         log.debug("Deleting device id={}", id);
         Device device = devicePersistenceAdapter.findById(id)
