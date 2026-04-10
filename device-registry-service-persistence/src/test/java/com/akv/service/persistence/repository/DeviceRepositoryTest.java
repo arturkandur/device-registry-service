@@ -2,7 +2,6 @@ package com.akv.service.persistence.repository;
 
 import com.akv.service.persistence.BasePersistenceTest;
 import com.akv.service.persistence.entity.DeviceEntity;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -15,11 +14,6 @@ class DeviceRepositoryTest extends BasePersistenceTest {
 
     @Autowired
     DeviceRepository repository;
-
-    @AfterEach
-    void tearDown() {
-        repository.deleteAll();
-    }
 
     @Test
     void shouldSaveAndFindById() {
