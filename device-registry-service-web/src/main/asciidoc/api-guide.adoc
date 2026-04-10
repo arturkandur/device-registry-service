@@ -1,0 +1,147 @@
+= Device Registry Service API Guide
+:toc: left
+:toclevels: 2
+:sectnums:
+:source-highlighter: highlight.js
+
+== Overview
+
+REST API for managing devices. All endpoints consume and produce `application/json`.
+
+== Devices
+
+=== Create Device
+
+`POST /devices`
+
+.Request Fields
+include::{snippets}/devices/create/request-fields.adoc[]
+
+.Example Request
+include::{snippets}/devices/create/http-request.adoc[]
+
+.Response Fields
+include::{snippets}/devices/create/response-fields.adoc[]
+
+.Example Response
+include::{snippets}/devices/create/http-response.adoc[]
+
+---
+
+=== Get Device by ID
+
+`GET /devices/{id}`
+
+.Path Parameters
+include::{snippets}/devices/get-by-id/path-parameters.adoc[]
+
+.Response Fields
+include::{snippets}/devices/get-by-id/response-fields.adoc[]
+
+.Example Request
+include::{snippets}/devices/get-by-id/http-request.adoc[]
+
+.Example Response
+include::{snippets}/devices/get-by-id/http-response.adoc[]
+
+---
+
+=== Get All Devices
+
+`GET /devices`
+
+.Response Fields
+include::{snippets}/devices/get-all/response-fields.adoc[]
+
+.Example Request
+include::{snippets}/devices/get-all/http-request.adoc[]
+
+.Example Response
+include::{snippets}/devices/get-all/http-response.adoc[]
+
+---
+
+=== Filter Devices by Brand
+
+`GET /devices?brand={brand}`
+
+.Query Parameters
+include::{snippets}/devices/get-by-brand/query-parameters.adoc[]
+
+.Example Request
+include::{snippets}/devices/get-by-brand/http-request.adoc[]
+
+.Example Response
+include::{snippets}/devices/get-by-brand/http-response.adoc[]
+
+---
+
+=== Filter Devices by State
+
+`GET /devices?state={state}`
+
+.Query Parameters
+include::{snippets}/devices/get-by-state/query-parameters.adoc[]
+
+.Example Request
+include::{snippets}/devices/get-by-state/http-request.adoc[]
+
+.Example Response
+include::{snippets}/devices/get-by-state/http-response.adoc[]
+
+---
+
+=== Update Device
+
+`PUT /devices/{id}`
+
+.Path Parameters
+include::{snippets}/devices/update/path-parameters.adoc[]
+
+.Request Fields
+include::{snippets}/devices/update/request-fields.adoc[]
+
+.Example Request
+include::{snippets}/devices/update/http-request.adoc[]
+
+.Response Fields
+include::{snippets}/devices/update/response-fields.adoc[]
+
+.Example Response
+include::{snippets}/devices/update/http-response.adoc[]
+
+---
+
+=== Patch Device
+
+`PATCH /devices/{id}`
+
+.Path Parameters
+include::{snippets}/devices/patch/path-parameters.adoc[]
+
+.Request Fields
+include::{snippets}/devices/patch/request-fields.adoc[]
+
+.Example Request
+include::{snippets}/devices/patch/http-request.adoc[]
+
+.Response Fields
+include::{snippets}/devices/patch/response-fields.adoc[]
+
+.Example Response
+include::{snippets}/devices/patch/http-response.adoc[]
+
+---
+
+=== Delete Device
+
+`DELETE /devices/{id}`
+
+.Path Parameters
+include::{snippets}/devices/delete/path-parameters.adoc[]
+
+.Example Request
+include::{snippets}/devices/delete/http-request.adoc[]
+
+.Example Response
+include::{snippets}/devices/delete/http-response.adoc[]
