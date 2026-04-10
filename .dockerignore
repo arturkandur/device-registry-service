@@ -1,0 +1,10 @@
+**/target/
+!device-registry-service/target/device-registry-service-*.jar
+**/.git/
+**/.idea/
+**/.mvn/
+*.md
+docs/
+.DS_Store
+.env*
+*.log
