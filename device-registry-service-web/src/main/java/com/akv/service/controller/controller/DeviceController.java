@@ -2,11 +2,14 @@ package com.akv.service.controller.controller;
 
 import com.akv.service.controller.dto.DeviceRequest;
 import com.akv.service.controller.dto.DeviceResponse;
+import com.akv.service.controller.validation.OnCreateOrUpdate;
 import com.akv.service.domain.Device;
 import com.akv.service.domain.service.DeviceService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -33,7 +36,7 @@ public class DeviceController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public DeviceResponse createDevice(@RequestBody DeviceRequest request) {
+    public DeviceResponse createDevice(@RequestBody @Validated(OnCreateOrUpdate.class) DeviceRequest request) {
         log.debug("Creating device: {}", request);
         DeviceResponse response = DEVICE_MAPPER.toResponse(
                 deviceService.createDevice(DEVICE_MAPPER.toDomain(request)));
@@ -42,7 +45,7 @@ public class DeviceController {
     }
 
     @PutMapping("/{id}")
-    public DeviceResponse updateDevice(@PathVariable Long id, @RequestBody DeviceRequest request) {
+    public DeviceResponse updateDevice(@PathVariable Long id, @RequestBody @Validated(OnCreateOrUpdate.class) DeviceRequest request) {
         log.debug("Updating device id={}: {}", id, request);
         DeviceResponse response = DEVICE_MAPPER.toResponse(
                 deviceService.updateDevice(DEVICE_MAPPER.toDomain(id, request)));
@@ -51,7 +54,7 @@ public class DeviceController {
     }
 
     @PatchMapping("/{id}")
-    public DeviceResponse patchDevice(@PathVariable Long id, @RequestBody DeviceRequest request) {
+    public DeviceResponse patchDevice(@PathVariable Long id, @RequestBody @Valid DeviceRequest request) {
         log.debug("Patching device id={}: {}", id, request);
         DeviceResponse response = DEVICE_MAPPER.toResponse(
                 deviceService.patchDevice(DEVICE_MAPPER.toDomain(id, request)));
