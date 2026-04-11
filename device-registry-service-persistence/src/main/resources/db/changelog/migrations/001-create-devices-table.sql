@@ -10,3 +10,4 @@ CREATE TABLE devices
     creation_time TIMESTAMP    NOT NULL,
     PRIMARY KEY (id)
 );
+--rollback DROP TABLE devices;
