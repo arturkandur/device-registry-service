@@ -56,7 +56,7 @@ REST API for managing devices. All endpoints consume and produce
 
 <div class="paragraph">
 
-`POST /devices`
+`POST /v1/devices`
 
 </div>
 
@@ -79,7 +79,7 @@ Example Request
 <div class="content">
 
 ``` highlightjs
-POST /devices HTTP/1.1
+POST /v1/devices HTTP/1.1
 Content-Type: application/json
 Content-Length: 55
 Host: localhost:8080
@@ -133,7 +133,7 @@ Content-Length: 99
 
 <div class="paragraph">
 
-`GET /devices/{id}`
+`GET /v1/devices/{id}`
 
 </div>
 
@@ -141,7 +141,7 @@ Content-Length: 99
 |-----------|-------------|
 | `id`      | Device ID   |
 
-Table 3. /devices/{id} {.tableblock .frame-all .grid-all .stretch}
+Table 3. /v1/devices/{id} {.tableblock .frame-all .grid-all .stretch}
 
 | Path           | Type     | Description                              |
 |----------------|----------|------------------------------------------|
@@ -164,7 +164,7 @@ Example Request
 <div class="content">
 
 ``` highlightjs
-GET /devices/1 HTTP/1.1
+GET /v1/devices/1 HTTP/1.1
 Host: localhost:8080
 ```
 
@@ -204,7 +204,7 @@ Content-Length: 99
 
 <div class="paragraph">
 
-`GET /devices`
+`GET /v1/devices`
 
 </div>
 
@@ -229,7 +229,7 @@ Example Request
 <div class="content">
 
 ``` highlightjs
-GET /devices HTTP/1.1
+GET /v1/devices HTTP/1.1
 Host: localhost:8080
 ```
 
@@ -269,7 +269,7 @@ Content-Length: 201
 
 <div class="paragraph">
 
-`GET /devices?brand={brand}`
+`GET /v1/devices?brand={brand}`
 
 </div>
 
@@ -290,7 +290,7 @@ Example Request
 <div class="content">
 
 ``` highlightjs
-GET /devices?brand=Apple HTTP/1.1
+GET /v1/devices?brand=Apple HTTP/1.1
 Host: localhost:8080
 ```
 
@@ -330,7 +330,7 @@ Content-Length: 101
 
 <div class="paragraph">
 
-`GET /devices?state={state}`
+`GET /v1/devices?state={state}`
 
 </div>
 
@@ -351,7 +351,7 @@ Example Request
 <div class="content">
 
 ``` highlightjs
-GET /devices?state=AVAILABLE HTTP/1.1
+GET /v1/devices?state=AVAILABLE HTTP/1.1
 Host: localhost:8080
 ```
 
@@ -391,7 +391,7 @@ Content-Length: 101
 
 <div class="paragraph">
 
-`PUT /devices/{id}`
+`PUT /v1/devices/{id}`
 
 </div>
 
@@ -399,7 +399,7 @@ Content-Length: 101
 |-----------|-------------|
 | `id`      | Device ID   |
 
-Table 8. /devices/{id} {.tableblock .frame-all .grid-all .stretch}
+Table 8. /v1/devices/{id} {.tableblock .frame-all .grid-all .stretch}
 
 | Path    | Type     | Description                                  |
 |---------|----------|----------------------------------------------|
@@ -420,7 +420,7 @@ Example Request
 <div class="content">
 
 ``` highlightjs
-PUT /devices/1 HTTP/1.1
+PUT /v1/devices/1 HTTP/1.1
 Content-Type: application/json
 Content-Length: 52
 Host: localhost:8080
@@ -474,7 +474,7 @@ Content-Length: 96
 
 <div class="paragraph">
 
-`PATCH /devices/{id}`
+`PATCH /v1/devices/{id}`
 
 </div>
 
@@ -482,7 +482,7 @@ Content-Length: 96
 |-----------|-------------|
 | `id`      | Device ID   |
 
-Table 11. /devices/{id} {.tableblock .frame-all .grid-all .stretch}
+Table 11. /v1/devices/{id} {.tableblock .frame-all .grid-all .stretch}
 
 | Path | Type | Description |
 |----|----|----|
@@ -503,7 +503,7 @@ Example Request
 <div class="content">
 
 ``` highlightjs
-PATCH /devices/1 HTTP/1.1
+PATCH /v1/devices/1 HTTP/1.1
 Content-Type: application/json
 Content-Length: 21
 Host: localhost:8080
@@ -557,7 +557,7 @@ Content-Length: 98
 
 <div class="paragraph">
 
-`DELETE /devices/{id}`
+`DELETE /v1/devices/{id}`
 
 </div>
 
@@ -565,7 +565,7 @@ Content-Length: 98
 |-----------|-------------|
 | `id`      | Device ID   |
 
-Table 14. /devices/{id} {.tableblock .frame-all .grid-all .stretch}
+Table 14. /v1/devices/{id} {.tableblock .frame-all .grid-all .stretch}
 
 <div class="listingblock">
 
@@ -578,7 +578,7 @@ Example Request
 <div class="content">
 
 ``` highlightjs
-DELETE /devices/1 HTTP/1.1
+DELETE /v1/devices/1 HTTP/1.1
 Host: localhost:8080
 ```
 
@@ -616,7 +616,7 @@ HTTP/1.1 204 No Content
 
 <div id="footer-text">
 
-Last updated 2026-04-10 21:04:38 +0300
+Last updated 2026-04-11 13:16:34 +0300
 
 </div>
 

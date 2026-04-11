@@ -28,7 +28,7 @@ import static com.akv.service.controller.mapper.DeviceMapper.DEVICE_MAPPER;
 
 @Slf4j
 @RestController
-@RequestMapping("/devices")
+@RequestMapping("/v1/devices")
 @RequiredArgsConstructor
 public class DeviceController {
 

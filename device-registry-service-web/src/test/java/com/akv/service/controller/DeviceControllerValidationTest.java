@@ -30,7 +30,7 @@ class DeviceControllerValidationTest extends WebControllerTest {
 
     @Test
     void shouldRejectCreateDeviceWhenNameIsMissing() throws Exception {
-        mockMvc.perform(post("/devices")
+        mockMvc.perform(post("/v1/devices")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {"brand":"Apple","state":"AVAILABLE"}
@@ -40,7 +40,7 @@ class DeviceControllerValidationTest extends WebControllerTest {
 
     @Test
     void shouldRejectCreateDeviceWhenNameIsBlank() throws Exception {
-        mockMvc.perform(post("/devices")
+        mockMvc.perform(post("/v1/devices")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {"name":"   ","brand":"Apple","state":"AVAILABLE"}
@@ -50,7 +50,7 @@ class DeviceControllerValidationTest extends WebControllerTest {
 
     @Test
     void shouldRejectCreateDeviceWhenBrandIsMissing() throws Exception {
-        mockMvc.perform(post("/devices")
+        mockMvc.perform(post("/v1/devices")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {"name":"Phone X","state":"AVAILABLE"}
@@ -60,7 +60,7 @@ class DeviceControllerValidationTest extends WebControllerTest {
 
     @Test
     void shouldRejectCreateDeviceWhenStateIsMissing() throws Exception {
-        mockMvc.perform(post("/devices")
+        mockMvc.perform(post("/v1/devices")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {"name":"Phone X","brand":"Apple"}
@@ -70,7 +70,7 @@ class DeviceControllerValidationTest extends WebControllerTest {
 
     @Test
     void shouldRejectUpdateDeviceWhenNameIsBlank() throws Exception {
-        mockMvc.perform(put("/devices/{id}", 1L)
+        mockMvc.perform(put("/v1/devices/{id}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {"name":"","brand":"Apple","state":"AVAILABLE"}
@@ -80,7 +80,7 @@ class DeviceControllerValidationTest extends WebControllerTest {
 
     @Test
     void shouldRejectUpdateDeviceWhenBrandIsMissing() throws Exception {
-        mockMvc.perform(put("/devices/{id}", 1L)
+        mockMvc.perform(put("/v1/devices/{id}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {"name":"Phone X","state":"AVAILABLE"}
@@ -90,7 +90,7 @@ class DeviceControllerValidationTest extends WebControllerTest {
 
     @Test
     void shouldRejectUpdateDeviceWhenStateIsMissing() throws Exception {
-        mockMvc.perform(put("/devices/{id}", 1L)
+        mockMvc.perform(put("/v1/devices/{id}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {"name":"Phone X","brand":"Apple"}
@@ -104,7 +104,7 @@ class DeviceControllerValidationTest extends WebControllerTest {
                 .id(1L).name("Phone X").brand("Apple")
                 .state(Device.State.INACTIVE).creationTime(Instant.now()).build());
 
-        mockMvc.perform(patch("/devices/{id}", 1L)
+        mockMvc.perform(patch("/v1/devices/{id}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {"state":"INACTIVE"}
@@ -118,7 +118,7 @@ class DeviceControllerValidationTest extends WebControllerTest {
                 .id(1L).name("Phone X").brand("Apple")
                 .state(Device.State.AVAILABLE).creationTime(Instant.now()).build());
 
-        mockMvc.perform(patch("/devices/{id}", 1L)
+        mockMvc.perform(patch("/v1/devices/{id}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
                 .andExpect(status().isOk());

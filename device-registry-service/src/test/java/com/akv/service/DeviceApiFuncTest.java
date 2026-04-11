@@ -15,7 +15,7 @@ class DeviceApiFuncTest extends BaseFuncTest {
         DeviceRequest deviceRequest = new DeviceRequest("Phone X", "Apple", Device.State.AVAILABLE);
         given()
                 .body(deviceRequest)
-                .when().post("/devices")
+                .when().post("/v1/devices")
                 .then().statusCode(201)
                 .body("id", notNullValue())
                 .body("name", equalTo("Phone X"))
@@ -30,7 +30,7 @@ class DeviceApiFuncTest extends BaseFuncTest {
         DeviceRequest updateDeviceRequest = new DeviceRequest("Laptop B", "HP", Device.State.IN_USE);
         given()
                 .body(updateDeviceRequest)
-                .when().put("/devices/{id}", id)
+                .when().put("/v1/devices/{id}", id)
                 .then().statusCode(200)
                 .body("name", equalTo("Laptop B"))
                 .body("brand", equalTo("HP"))
@@ -41,10 +41,10 @@ class DeviceApiFuncTest extends BaseFuncTest {
     void shouldDeleteDevice() {
         long id = createAndGetId("Tablet Z", "Samsung", Device.State.AVAILABLE);
 
-        given().when().delete("/devices/{id}", id)
+        given().when().delete("/v1/devices/{id}", id)
                 .then().statusCode(204);
 
-        given().when().get("/devices/{id}", id)
+        given().when().get("/v1/devices/{id}", id)
                 .then().statusCode(404);
     }
 
@@ -52,7 +52,7 @@ class DeviceApiFuncTest extends BaseFuncTest {
     void shouldFindDeviceById() {
         long id = createAndGetId("Watch S", "Samsung", Device.State.IN_USE);
 
-        given().when().get("/devices/{id}", id)
+        given().when().get("/v1/devices/{id}", id)
                 .then().statusCode(200)
                 .body("id", equalTo((int) id))
                 .body("name", equalTo("Watch S"))
@@ -67,7 +67,7 @@ class DeviceApiFuncTest extends BaseFuncTest {
         DeviceRequest update = new DeviceRequest("Tablet Z", "Apple", Device.State.IN_USE);
         given()
                 .body(update)
-                .when().put("/devices/{id}", id)
+                .when().put("/v1/devices/{id}", id)
                 .then().statusCode(409);
     }
 
@@ -78,7 +78,7 @@ class DeviceApiFuncTest extends BaseFuncTest {
         DeviceRequest patch = new DeviceRequest(null, "Samsung", null);
         given()
                 .body(patch)
-                .when().patch("/devices/{id}", id)
+                .when().patch("/v1/devices/{id}", id)
                 .then().statusCode(409);
     }
 
@@ -86,7 +86,7 @@ class DeviceApiFuncTest extends BaseFuncTest {
     void shouldNotDeleteInUseDevice() {
         long id = createAndGetId("Phone Y", "Apple", Device.State.IN_USE);
 
-        given().when().delete("/devices/{id}", id)
+        given().when().delete("/v1/devices/{id}", id)
                 .then().statusCode(409);
     }
 
@@ -94,7 +94,7 @@ class DeviceApiFuncTest extends BaseFuncTest {
         DeviceRequest deviceRequest = new DeviceRequest(name, brand, state);
         return given()
                 .body(deviceRequest)
-                .when().post("/devices")
+                .when().post("/v1/devices")
                 .then().statusCode(201)
                 .extract().jsonPath().getLong("id");
     }

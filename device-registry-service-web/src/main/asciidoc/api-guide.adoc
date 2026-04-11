@@ -12,7 +12,7 @@ REST API for managing devices. All endpoints consume and produce `application/js
 
 === Create Device
 
-`POST /devices`
+`POST /v1/devices`
 
 .Request Fields
 include::{snippets}/devices/create/request-fields.adoc[]
@@ -30,7 +30,7 @@ include::{snippets}/devices/create/http-response.adoc[]
 
 === Get Device by ID
 
-`GET /devices/{id}`
+`GET /v1/devices/{id}`
 
 .Path Parameters
 include::{snippets}/devices/get-by-id/path-parameters.adoc[]
@@ -48,7 +48,7 @@ include::{snippets}/devices/get-by-id/http-response.adoc[]
 
 === Get All Devices
 
-`GET /devices`
+`GET /v1/devices`
 
 .Response Fields
 include::{snippets}/devices/get-all/response-fields.adoc[]
@@ -63,7 +63,7 @@ include::{snippets}/devices/get-all/http-response.adoc[]
 
 === Filter Devices by Brand
 
-`GET /devices?brand={brand}`
+`GET /v1/devices?brand={brand}`
 
 .Query Parameters
 include::{snippets}/devices/get-by-brand/query-parameters.adoc[]
@@ -78,7 +78,7 @@ include::{snippets}/devices/get-by-brand/http-response.adoc[]
 
 === Filter Devices by State
 
-`GET /devices?state={state}`
+`GET /v1/devices?state={state}`
 
 .Query Parameters
 include::{snippets}/devices/get-by-state/query-parameters.adoc[]
@@ -93,7 +93,7 @@ include::{snippets}/devices/get-by-state/http-response.adoc[]
 
 === Update Device
 
-`PUT /devices/{id}`
+`PUT /v1/devices/{id}`
 
 .Path Parameters
 include::{snippets}/devices/update/path-parameters.adoc[]
@@ -114,7 +114,7 @@ include::{snippets}/devices/update/http-response.adoc[]
 
 === Patch Device
 
-`PATCH /devices/{id}`
+`PATCH /v1/devices/{id}`
 
 .Path Parameters
 include::{snippets}/devices/patch/path-parameters.adoc[]
@@ -135,7 +135,7 @@ include::{snippets}/devices/patch/http-response.adoc[]
 
 === Delete Device
 
-`DELETE /devices/{id}`
+`DELETE /v1/devices/{id}`
 
 .Path Parameters
 include::{snippets}/devices/delete/path-parameters.adoc[]

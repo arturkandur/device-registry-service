@@ -61,7 +61,7 @@ class DeviceControllerTest extends WebControllerTest {
                 .build();
         when(deviceService.createDevice(device)).thenReturn(device(1L));
 
-        mockMvc.perform(post("/devices")
+        mockMvc.perform(post("/v1/devices")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {"name":"Phone X","brand":"Apple","state":"AVAILABLE"}
@@ -98,7 +98,7 @@ class DeviceControllerTest extends WebControllerTest {
         when(deviceService.updateDevice(device))
                 .thenReturn(device.toBuilder().creationTime(CREATION_TIME).build());
 
-        mockMvc.perform(put("/devices/{id}", 1L)
+        mockMvc.perform(put("/v1/devices/{id}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {"name":"Phone X","brand":"Apple","state":"IN_USE"}
@@ -129,7 +129,7 @@ class DeviceControllerTest extends WebControllerTest {
         when(deviceService.patchDevice(Device.builder().id(1L).state(Device.State.INACTIVE).build()))
                 .thenReturn(device(1L).toBuilder().state(Device.State.INACTIVE).build());
 
-        mockMvc.perform(patch("/devices/{id}", 1L)
+        mockMvc.perform(patch("/v1/devices/{id}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {"state":"INACTIVE"}
@@ -159,7 +159,7 @@ class DeviceControllerTest extends WebControllerTest {
     void shouldGetDeviceAndReturns200WithDevice() throws Exception {
         when(deviceService.getDevice(1L)).thenReturn(device(1L));
 
-        mockMvc.perform(get("/devices/{id}", 1L))
+        mockMvc.perform(get("/v1/devices/{id}", 1L))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.name").value("Phone X"))
@@ -181,7 +181,7 @@ class DeviceControllerTest extends WebControllerTest {
     void shouldGetAllDevicesAndReturns200WithDeviceList() throws Exception {
         when(deviceService.getAllDevices()).thenReturn(List.of(device(1L), device(2L)));
 
-        mockMvc.perform(get("/devices"))
+        mockMvc.perform(get("/v1/devices"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(2))
                 .andDo(document("devices/get-all",
@@ -199,7 +199,7 @@ class DeviceControllerTest extends WebControllerTest {
     void shouldGetDevicesAndFilterByBrandAndReturns200WithMatchingDevices() throws Exception {
         when(deviceService.getDevicesByBrand("Apple")).thenReturn(List.of(device(1L)));
 
-        mockMvc.perform(get("/devices").param("brand", "Apple"))
+        mockMvc.perform(get("/v1/devices").param("brand", "Apple"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1))
                 .andExpect(jsonPath("$[0].brand").value("Apple"))
@@ -221,7 +221,7 @@ class DeviceControllerTest extends WebControllerTest {
     void shouldGetDevicesAndFilterByStateAndReturns200WithMatchingDevices() throws Exception {
         when(deviceService.getDevicesByState(Device.State.AVAILABLE)).thenReturn(List.of(device(1L)));
 
-        mockMvc.perform(get("/devices").param("state", "AVAILABLE"))
+        mockMvc.perform(get("/v1/devices").param("state", "AVAILABLE"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1))
                 .andExpect(jsonPath("$[0].state").value("AVAILABLE"))
@@ -243,7 +243,7 @@ class DeviceControllerTest extends WebControllerTest {
     void shouldDeleteDeviceAndReturns204() throws Exception {
         doNothing().when(deviceService).deleteDevice(1L);
 
-        mockMvc.perform(delete("/devices/{id}", 1L))
+        mockMvc.perform(delete("/v1/devices/{id}", 1L))
                 .andExpect(status().isNoContent())
                 .andDo(document("devices/delete",
                         pathParameters(
